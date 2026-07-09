@@ -1,0 +1,32 @@
+\babel@toc {french}{}\relax 
+\contentsline {section}{\numberline {1}Résumé}{3}{section.1}%
+\contentsline {section}{\numberline {2}Étage régulier \& transducteurs (Jour 1)}{4}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Q1.1 — Expression régulière}{4}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Q1.2 — Du non-déterminisme à l'AFD minimal}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Q1.3 — Facteur vs sous-séquence}{5}{subsection.2.3}%
+\contentsline {subsection}{\numberline {2.4}Idempotence du FST Leetspeak}{5}{subsection.2.4}%
+\contentsline {subsection}{\numberline {2.5}Miroir : one-way vs two-way}{5}{subsection.2.5}%
+\contentsline {section}{\numberline {3}Hors-contexte (Jour 2)}{7}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Q2.1 — Lemme de pompage pour $D = \{[^n\tmspace +\thickmuskip {.2777em}]^n \mid n \ge 0\}$}{7}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Q2.2 — Grammaire des prompts bien parenthésés}{7}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Q2.3 — Ambiguïté et désambiguïsation}{7}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}PDA : fonction de transition}{7}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Arbres (Jour 3) — pivot}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Q3.1 — Définition et Déterminisme du BUTA}{8}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}Preuve d'unité}{9}{subsection.4.2}%
+\contentsline {subsection}{\numberline {4.3}Q3.2 — Échec de l'AFD de mots linéaire}{9}{subsection.4.3}%
+\contentsline {subsection}{\numberline {4.4}Q3.3 — Théorème du Yield}{10}{subsection.4.4}%
+\contentsline {subsection}{\numberline {4.5}Q3.4 — Produit d'intersection}{10}{subsection.4.5}%
+\contentsline {subsection}{\numberline {4.6}Traces d'exécution ascendante}{10}{subsection.4.6}%
+\contentsline {section}{\numberline {5}Calculabilité (Jour 4)}{11}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Q4.1 — Machine de Turing et Machine Universelle}{11}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Q4.2 — Calculatrice unaire}{11}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Q4.3 — Complexité et Indécidabilité}{12}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Intégration \& Myhill--Nerode (Jour 5)}{13}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Q5.1 — Pipeline bout-en-bout}{13}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Q5.2 — Suffixes témoins et Classes d'équivalence}{13}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Q5.3 — Hash-consing (Bonus)}{13}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Difficultés rencontrées \& choix de conception}{15}{section.7}%
+\contentsline {section}{\numberline {8}Répartition du travail}{15}{section.8}%
+\contentsline {section}{Annexe — Sortie console}{16}{section.8}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

@@ -1,0 +1,717 @@
+% ═══════════════════════════════════════════════════════════════════════════════
+%  RAPPORT.tex — Rapport de Projet formlang
+%  Binôme 5 : ANATO K. Freddy · GUENANON K. C. Ulysse
+%  Style : moderne, noir/gris, haute lisibilité, pédagogique
+% ═══════════════════════════════════════════════════════════════════════════════
+\documentclass[12pt,a4paper,oneside]{scrartcl}
+
+% ─── Encodage et langue ──────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+
+% ─── Typographie moderne ────────────────────────────────────────────────────
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{setspace}
+\onehalfspacing
+
+% ─── Mise en page ───────────────────────────────────────────────────────────
+\usepackage{geometry}
+\geometry{top=1.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% ─── Couleurs (palette noir/gris sobre) ────────────────────────────────────
+\usepackage{xcolor}
+\definecolor{noir}{HTML}{1A1A1A}
+\definecolor{gris}{HTML}{4A4A4A}
+\definecolor{grisclair}{HTML}{888888}
+\definecolor{grisfond}{HTML}{F5F5F5}
+\definecolor{accent}{HTML}{2C2C2C}
+\definecolor{bordure}{HTML}{CCCCCC}
+
+% ─── Tableaux, listes, code ─────────────────────────────────────────────────
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\setlist{itemsep=2pt, parsep=2pt}
+\usepackage{listings}
+\lstdefinestyle{code}{
+  basicstyle=\ttfamily\small,
+  backgroundcolor=\color{grisfond},
+  keywordstyle=\color{noir}\bfseries,
+  commentstyle=\color{grisclair}\itshape,
+  stringstyle=\color{gris},
+  numberstyle=\tiny\color{grisclair},
+  showstringspaces=false,
+  breaklines=true,
+  frame=leftline, framerule=1.5pt, rulecolor=\color{gris},
+  xleftmargin=8pt, aboveskip=8pt, belowskip=8pt,
+  columns=fullflexible, keepspaces=true,
+}
+\lstset{style=code}
+
+% ─── Boîtes tcolorbox (sobres, noir/gris) ──────────────────────────────────
+\usepackage[most]{tcolorbox}
+\newtcolorbox{definitionbox}[1][]{
+  enhanced, breakable,
+  colback=grisfond, colframe=gris,
+  fonttitle=\bfseries\large\color{noir},
+  coltitle=noir, colbacktitle=grisfond,
+  boxrule=1pt, arc=2pt,
+  attach boxed title to top left={xshift=6pt, yshift=-2pt},
+  boxed title style={colback=grisfond, boxrule=0.5pt, colframe=gris},
+  title={#1}, left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+\newtcolorbox{tracebox}[1][Trace]{
+  enhanced, breakable,
+  colback=white, colframe=bordure,
+  fonttitle=\bfseries\color{gris},
+  coltitle=gris, colbacktitle=white,
+  boxrule=0.5pt, arc=2pt,
+  borderline west={2pt}{0pt}{gris},
+  title={#1}, left=8pt, right=8pt, top=4pt, bottom=4pt
+}
+
+% ─── TikZ ───────────────────────────────────────────────────────────────────
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning,arrows.meta,calc,fit,backgrounds,chains,
+                shapes.multipart,shapes.geometric,matrix,trees,
+                decorations.pathreplacing}
+\tikzset{
+  etat/.style={circle, draw=noir, very thick, minimum size=10mm,
+               font=\normalsize\bfseries, fill=grisfond},
+  etatfin/.style={etat, double, double distance=1.5pt},
+  fleche/.style={-{Stealth[length=2.5mm]}, thick, draw=gris!80!noir},
+  noeud/.style={draw=gris, thick, rounded corners=2pt, fill=grisfond,
+                inner sep=4pt, font=\small},
+  feuille/.style={draw=gris, thick, rounded corners=2pt, fill=white,
+                  inner sep=4pt, font=\small\itshape},
+  tapecell/.style={draw=gris, thick, minimum size=8mm, font=\ttfamily},
+  tapehead/.style={-{Stealth[length=2.5mm]}, very thick, noir},
+}
+
+% ─── En-têtes / pieds de page ──────────────────────────────────────────────
+\usepackage{scrlayer-scrpage}
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+\ihead{\small\color{grisclair}\textit{Rapport de Projet — formlang}}
+\ohead{\small\color{grisclair}IUT/IFRI — Master GL}
+\cfoot{\small\color{grisclair}Page \thepage}
+\KOMAoptions{headsepline=0.5pt}
+\addtokomafont{headsepline}{\color{bordure}}
+\setkomafont{pageheadfoot}{\normalfont\small\color{grisclair}}
+
+% ─── Titres (noir, tailles augmentées) ─────────────────────────────────────
+\addtokomafont{section}{\color{noir}\Large}
+\addtokomafont{subsection}{\color{noir}\large}
+\addtokomafont{subsubsection}{\color{gris}\normalsize}
+\addtokomafont{title}{\color{noir}}
+
+% ─── Hyperlinks ────────────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=gris, urlcolor=grisclair, citecolor=gris]{hyperref}
+
+\emergencystretch=4em
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+
+% ─── PAGE DE TITRE ─────────────────────────────────────────────────────────
+\begin{titlepage}
+\centering
+\vspace*{2cm}
+
+{\color{bordure}\rule{\textwidth}{0.5pt}}
+\vspace{0.6cm}
+
+{\Huge\bfseries\color{noir} Rapport de Projet}\\[0.4cm]
+{\LARGE\color{gris} formlang}\\[0.6cm]
+
+{\color{bordure}\rule{\textwidth}{0.5pt}}
+\vspace{1.5cm}
+
+{\Large\color{gris} Module : Théorie des langages \& calculabilité}\\[1cm]
+
+{\large\color{noir}\bfseries Binôme 5}\\[0.4cm]
+{\large\color{gris} ANATO K. Freddy}\\[0.2cm]
+{\large\color{gris} GUENANON K. C. Ulysse}\\[2cm]
+
+\begin{tabular}{rl}
+    \textcolor{grisclair}{Établissement :} & IUT / IFRI — Master Génie Logiciel \\
+    \textcolor{grisclair}{Enseignant :} & Dr. Mêton ATINDEHOU \\
+    \textcolor{grisclair}{Langage :} & Python 3.10+ \\
+    \textcolor{grisclair}{Date :} & Juin 2026 \\
+\end{tabular}
+
+\vspace{0.8cm}
+{\normalsize\color{gris}\textbf{Dépôt Git :} \texttt{https://github.com/ak4f/ANATO\_GUENANON\_formlang.git} \quad$\cdot$\quad \textbf{Commit final :} \texttt{61bd70d} \textit{(Jour 5: Integration, Myhill-Nerode et Pipeline complet)}}
+
+\vfill
+
+{\small\color{grisclair} Toute borne de complexité est démontrée ou référencée — pas de constante « de mémoire ».}
+
+\end{titlepage}
+
+% ─── TABLE DES MATIÈRES ───────────────────────────────────────────────────
+\tableofcontents
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Résumé}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+Le projet \texttt{formlang} réalise une implémentation complète de la hiérarchie de Chomsky en Python~3.10+, allant de la reconnaissance de motifs réguliers à la simulation d'un ordinateur universel. L'architecture repose sur une bibliothèque unifiée \texttt{formlang/} articulée autour de quatre applications métier :
+
+\begin{enumerate}[leftmargin=2cm]
+    \item \textbf{\texttt{apps/morpho}} — analyseur morphologique par automate d'arbres ascendant (BUTA), classifiant les structures de mots (BARE, PREFIXED, SUFFIXED, CIRCUMFIXED) ;
+    \item \textbf{\texttt{apps/shield}} — décomposeur d'attaques structurel filtrant les prompts à l'aide d'automates d'arbres réguliers et détectant le double encodage ;
+    \item \textbf{\texttt{apps/hashcons}} — table de partage de structure par Hash-consing (DAG) pour optimiser la mémoire ;
+    \item \textbf{\texttt{apps/mtu}} — simulateur de machine de Turing, machine universelle (UTM) et calculatrice unaire.
+\end{enumerate}
+
+L'architecture découple rigoureusement le cœur formel (automates, grammaires, transducteurs, machines de Turing) de la logique des applications, assurant une parfaite modularité (respect de la règle \textit{Gate}).
+
+\begin{center}
+\fbox{\large\bfseries Résultat global des tests : \texttt{28 passed}}
+\end{center}
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Étage régulier \& transducteurs (Jour 1)}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Q1.1 — Expression régulière}
+
+\begin{definitionbox}[Expression régulière de $L_1$]
+Le langage $L_1$ contient tous les mots sur $\Sigma = \{a, o, r\}$ qui possèdent le \textbf{facteur} \texttt{or} :
+$$\boxed{L_1 = (a+o+r)^*\;\texttt{or}\;(a+o+r)^*}$$
+\end{definitionbox}
+
+\textbf{Justification :}
+$L_1$ est le langage de tous les mots contenant le facteur consécutif \texttt{or}. L'expression $(a+o+r)^*$ capture n'importe quelle suite de lettres de $\Sigma$ (y compris le mot vide $\epsilon$). En encadrant le motif obligatoire \texttt{or}, on obtient l'ensemble exact des mots contenant ce facteur.
+
+\subsection{Q1.2 — Du non-déterminisme à l'AFD minimal}
+
+\subsubsection*{Automate Fini Non-déterministe (AFN)}
+
+\begin{center}
+\begin{tikzpicture}[node distance=3.5cm, on grid, auto]
+    \node[etat, initial, initial text=] (q0) {$q_0$};
+    \node[etat, right=of q0] (q1) {$q_1$};
+    \node[etatfin, right=of q1] (q2) {$q_2$};
+    
+    \path[fleche] 
+        (q0) edge[loop above] node {a, o, r} (q0)
+             edge node {o} (q1)
+        (q1) edge node {r} (q2)
+        (q2) edge[loop above] node {a, o, r} (q2);
+\end{tikzpicture}
+\end{center}
+
+\textbf{Table de transition de l'AFN :}
+\begin{center}
+\begin{tabular}{r ccc}
+    \toprule
+    \textbf{État} & \textbf{a} & \textbf{o} & \textbf{r} \\
+    \midrule
+    $\to q_0$ & $\{q_0\}$ & $\{q_0, q_1\}$ & $\{q_0\}$ \\
+    $q_1$ & $\emptyset$ & $\emptyset$ & $\{q_2\}$ \\
+    $*\, q_2$ & $\{q_2\}$ & $\{q_2\}$ & $\{q_2\}$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Déterminisation (algorithme des sous-ensembles)}
+
+\begin{center}
+\begin{tabular}{r ccc}
+    \toprule
+    \textbf{État} & \textbf{a} & \textbf{o} & \textbf{r} \\
+    \midrule
+    $\to S_0 = \{q_0\}$ & $S_0$ & $S_1$ & $S_0$ \\
+    $S_1 = \{q_0,q_1\}$ & $S_0$ & $S_1$ & $S_2$ \\
+    $*\, S_2 = \{q_0,q_2\}$ & $S_2$ & $S_3$ & $S_2$ \\
+    $*\, S_3 = \{q_0,q_1,q_2\}$ & $S_2$ & $S_3$ & $S_2$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Minimisation (raffinement de Moore)}
+
+\begin{enumerate}
+    \item \textbf{Partition initiale :} $I = \{S_0, S_1\}$ (non acceptants) \quad $II = \{S_2, S_3\}$ (acceptants).
+    \item \textbf{Raffinement de $I$ :} Sur la lettre $r$, $S_0 \to S_0 \in I$ mais $S_1 \to S_2 \in II$. Ils sont distinguables. On sépare $I_1 = \{S_0\}$ et $I_2 = \{S_1\}$.
+    \item \textbf{Raffinement de $II$ :} Sur toutes les lettres, $S_2$ et $S_3$ ont les mêmes images ($II$, $II$, $II$). Ils fusionnent.
+\end{enumerate}
+
+L'AFD minimal possède donc \textbf{3 états} : $A = \{S_0\}$, $B = \{S_1\}$, $C = \{S_2, S_3\}$.
+
+\subsubsection*{AFD minimal de $L_1$}
+
+\begin{center}
+\begin{tikzpicture}[node distance=3.5cm, on grid, auto]
+    \node[etat, initial, initial text=] (A) {$A$};
+    \node[etat, right=of A] (B) {$B$};
+    \node[etatfin, right=of B] (C) {$C$};
+    
+    \path[fleche] 
+        (A) edge[loop above] node {a, r} (A)
+            edge[bend left=20] node {o} (B)
+        (B) edge[loop above] node {o} (B)
+            edge[bend left=20] node[below] {a} (A)
+            edge node {r} (C)
+        (C) edge[loop above] node {a, o, r} (C);
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tabular}{r ccc}
+    \toprule
+    \textbf{État} & \textbf{a} & \textbf{o} & \textbf{r} \\
+    \midrule
+    $\to A$ & $A$ & $B$ & $A$ \\
+    $B$ & $A$ & $B$ & $C$ \\
+    $*\, C$ & $C$ & $C$ & $C$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Q1.3 — Facteur vs sous-séquence}
+
+\begin{definitionbox}[Sous-séquence $L_1'$]
+$L_1' = \{w \mid w \text{ contient un \texttt{o} suivi, pas forcément immédiatement, d'un \texttt{r}}\}$
+$$\boxed{L_1' = (a+o+r)^*\;o\;(a+o+r)^*\;r\;(a+o+r)^*}$$
+\end{definitionbox}
+
+\textbf{Différence :} Dans $L_1$, les lettres \texttt{o} et \texttt{r} forment un \textit{facteur} (adjacentes). Dans $L_1'$, elles forment une \textit{sous-séquence} (séparées par un nombre quelconque de lettres).
+
+\textbf{Preuve de l'inclusion $L_1 \subseteq L_1'$ :} Soit $w \in L_1$. Il existe $u, v \in \Sigma^*$ tels que $w = u \cdot \text{or} \cdot v = u \cdot o \cdot \epsilon \cdot r \cdot v$. Comme $\epsilon \in \Sigma^*$, $w$ satisfait le motif de $L_1'$.
+
+\textbf{Contre-exemple :} Le mot \texttt{oar} appartient à $L_1'$ (le \texttt{o} précède le \texttt{r}) mais pas à $L_1$ (pas de facteur \texttt{or} consécutif).
+
+\subsection{Idempotence du FST Leetspeak}
+
+Soit $T$ la fonction de transduction. Le mot transduit $T(w)$ ne contient plus de chiffre. Pour tout caractère alphabétique, $T$ agit comme l'identité. Par conséquent :
+$$T(T(w)) = T(w)$$
+L'opération est \textbf{idempotente}.
+
+\subsection{Miroir : one-way vs two-way}
+
+Le renversement $w \mapsto w^R$ est impossible pour un transducteur \textit{one-way} : il devrait mémoriser tout le mot dans ses états pour écrire la dernière lettre en premier, ce qui nécessiterait un nombre infini d'états. Un transducteur \textit{two-way} peut avancer jusqu'à la fin du ruban puis rebrousser chemin en émettant les symboles de droite à gauche.
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Hors-contexte (Jour 2)}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Q2.1 — Lemme de pompage pour $D = \{[^n\;]^n \mid n \ge 0\}$}
+
+Supposons par l'absurde que $D$ soit régulier. Il existe une constante de pompage $p \ge 1$.
+Considérons $w = [^p\;]^p \in D$. Comme $|w| = 2p \ge p$, on décompose $w = xyz$ avec $|xy| \le p$, $|y| \ge 1$.
+
+Puisque $|xy| \le p$, le facteur $y$ ne contient que des crochets ouvrants : $y = [^k$ avec $k \ge 1$.
+
+Pour $i = 2$, le mot pompé est $xy^2z = [^{p+k}\;]^p$. Or $p + k \neq p$ car $k \ge 1$, donc $xy^2z \notin D$. \textbf{Contradiction.}
+
+$D$ n'est pas régulier : un AFD ne peut pas compter les délimiteurs. Il faut une \textbf{pile} (mémoire infinie).
+
+\subsection{Q2.2 — Grammaire des prompts bien parenthésés}
+
+Grammaire algébrique $G = (\mathcal{V}, \Sigma, R, S)$ avec $\Sigma = \{a, o, r, [, ], (, )\}$ :
+$$S \to SS \mid [S] \mid (S) \mid a \mid o \mid r \mid \epsilon$$
+
+\subsection{Q2.3 — Ambiguïté et désambiguïsation}
+
+La grammaire est \textbf{ambiguë} car $S \to SS$ permet deux associations pour \texttt{aaa} :
+\begin{itemize}
+    \item Association à gauche : $S \to SS \to (SS)S \to (aS)S \to (aa)a$
+    \item Association à droite : $S \to SS \to S(SS) \to a(aS) \to a(aa)$
+\end{itemize}
+
+Grammaire \textbf{désambiguïsée} (dérivation déterministe de gauche à droite) :
+$$S \to [S]S \mid (S)S \mid aS \mid oS \mid rS \mid \epsilon$$
+
+\subsection{PDA : fonction de transition}
+
+\begin{definitionbox}[Automate à pile $M$]
+$M = (\{q_0\}, \Sigma, \Gamma, \delta, q_0, \emptyset)$ — acceptation par \textbf{pile vide}
+\begin{itemize}
+    \item $\Sigma = \{a, o, r, e, [, ], (, )\}$ \quad (alphabet d'entrée)
+    \item $\Gamma = \{[, (\}$ \quad (alphabet de pile)
+\end{itemize}
+\end{definitionbox}
+
+Fonction de transition $\delta$ :
+\begin{enumerate}
+    \item \textbf{Empilement} : $\delta(q_0, [, \epsilon) = \{(q_0, [)\}$ \quad et \quad $\delta(q_0, (, \epsilon) = \{(q_0, ()\}$
+    \item \textbf{Dépilement} : $\delta(q_0, ], [) = \{(q_0, \epsilon)\}$ \quad et \quad $\delta(q_0, ), () = \{(q_0, \epsilon)\}$
+    \item \textbf{Ignorance} : $\delta(q_0, c, \epsilon) = \{(q_0, \epsilon)\}$ \quad pour tout $c \in \{a, o, r, e\}$
+    \item \textbf{Rejet} : toute autre transition non définie bloque la machine.
+\end{enumerate}
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Arbres (Jour 3) — pivot}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Q3.1 — Définition et Déterminisme du BUTA}
+
+\begin{definitionbox}[BUTA — Bottom-Up Tree Automaton]
+Un BUTA est un quadruplet $A = (Q, \Sigma, Q_f, \Delta)$ où :
+\begin{itemize}
+    \item $Q$ : ensemble fini d'états
+    \item $\Sigma$ : alphabet classé (chaque symbole a une arité)
+    \item $Q_f \subseteq Q$ : états finaux (acceptants)
+    \item $\Delta$ : règles de transition $f(q_1, \dots, q_k) \to q$
+\end{itemize}
+Le BUTA est \textbf{déterministe} si pour chaque $(f, q_1, \dots, q_k)$, il existe \textbf{au plus un} état $q$ image.
+\end{definitionbox}
+
+\textbf{Implémentation :} $\Delta$ est un \texttt{dict} Python associant \texttt{(symbol, tuple(child\_states))} à un unique état. Le parcours est \textbf{post-ordre} (feuilles $\to$ racine), coût $O(n)$.
+
+\textbf{Règles $\Delta$ de \texttt{morpho\_automaton} :}
+\begin{center}
+\begin{tabular}{lcl}
+    \toprule
+    \textbf{Transition} & $\to$ & \textbf{État} \\
+    \midrule
+    \texttt{prefix}() & $\to$ & PRE \\
+    \texttt{root}() & $\to$ & ROOT \\
+    \texttt{suffix}() & $\to$ & SUF \\
+    \texttt{nil}() & $\to$ & NIL \\
+    \texttt{prefixes}(PRE, NIL) & $\to$ & PCHAIN \\
+    \texttt{prefixes}(PRE, PCHAIN) & $\to$ & PCHAIN \\
+    \texttt{suffixes}(SUF, NIL) & $\to$ & SCHAIN \\
+    \texttt{suffixes}(SUF, SCHAIN) & $\to$ & SCHAIN \\
+    \texttt{rest}(ROOT, NIL) & $\to$ & REST \\
+    \texttt{rest}(ROOT, SCHAIN) & $\to$ & REST \\
+    \texttt{word}(NIL, REST) & $\to$ & WORD \\
+    \texttt{word}(PCHAIN, REST) & $\to$ & WORD \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Règles $\Delta$ de \texttt{shield\_automaton} :}
+\begin{center}
+\begin{tabular}{lcl}
+    \toprule
+    \textbf{Transition} & $\to$ & \textbf{État} \\
+    \midrule
+    \texttt{txt}() & $\to$ & SAFE \\
+    \texttt{enc}() & $\to$ & SAFE \\
+    \texttt{ovr}() & $\to$ & OVR \\
+    \texttt{role}() & $\to$ & ROLE \\
+    \texttt{frame}(SAFE) & $\to$ & SAFE \\
+    \texttt{frame}($x \neq$ SAFE) & $\to$ & DANGER \\
+    \texttt{sys}(SAFE) & $\to$ & SAFE \\
+    \texttt{sys}($x \neq$ SAFE) & $\to$ & DANGER \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Preuve d'unité}
+
+Les deux applications instancient le même moteur \texttt{TreeAutomaton} de \texttt{formlang/tree.py} :
+\begin{lstlisting}[language=Python]
+# apps/morpho/automaton.py
+from formlang.tree import Term, TreeAutomaton
+def morpho_automaton() -> TreeAutomaton:
+    A = TreeAutomaton(final_states={"WORD"})
+    A.add_rule("prefix", (), "PRE")
+    ...
+
+# apps/shield/decomposer.py
+from formlang.tree import Term, TreeAutomaton
+def shield_automaton() -> TreeAutomaton:
+    A = TreeAutomaton(final_states={DANGER})
+    A.add_rule("txt", (), SAFE)
+    ...
+\end{lstlisting}
+
+\subsection{Q3.2 — Échec de l'AFD de mots linéaire}
+
+\begin{center}
+\begin{tabular}{cc}
+\begin{tikzpicture}[level distance=1.2cm, sibling distance=1.6cm,
+    edge from parent/.style={draw=gris, thick, -}]
+    \node[noeud] {word}
+        child { node[noeud] {prefixes}
+            child { node[feuille] {prefix: a} }
+            child { node[feuille] {nil} }
+        }
+        child { node[noeud] {rest}
+            child { node[feuille] {root: pend} }
+            child { node[feuille] {nil} }
+        };
+\end{tikzpicture}
+&
+\begin{tikzpicture}[level distance=1.2cm, sibling distance=1.6cm,
+    edge from parent/.style={draw=gris, thick, -}]
+    \node[noeud] {word}
+        child { node[feuille] {nil} }
+        child { node[noeud] {rest}
+            child { node[feuille] {root: a} }
+            child { node[noeud] {suffixes}
+                child { node[feuille] {suffix: pend} }
+                child { node[feuille] {nil} }
+            }
+        };
+\end{tikzpicture} \\[0.3cm]
+\small Arbre 1 (préfixe ``a'' + racine ``pend'') & \small Arbre 2 (racine ``a'' + suffixe ``pend'')
+\end{tabular}
+\end{center}
+
+Les deux ont la même frontière linéaire \texttt{"a pend"}. Un AFD ne voit que la chaîne plate et ne peut pas distinguer la \textbf{structure syntaxique}.
+
+\subsection{Q3.3 — Théorème du Yield}
+
+Le yield d'un arbre morphologique valide est de la forme $p^*\;r\;s^*$ (préfixes, racine, suffixes), soit le langage régulier $\Sigma_{\text{pref}}^* \cdot \Sigma_{\text{root}} \cdot \Sigma_{\text{suff}}^*$. Le théorème du yield énonce que la projection linéaire des arbres réguliers est un langage \textbf{hors-contexte}.
+
+\subsection{Q3.4 — Produit d'intersection}
+
+Le produit $A_1 \times A_2$ a pour transitions :
+$$f((q_1, p_1), \dots, (q_k, p_k)) \to (r_1, r_2) \quad\text{ssi}\quad f(q_1, \dots, q_k) \to r_1 \in \Delta_1 \;\text{et}\; f(p_1, \dots, p_k) \to r_2 \in \Delta_2$$
+avec états finaux $Q_{f1} \times Q_{f2}$. Alors $L(A_1 \times A_2) = L(A_1) \cap L(A_2)$.
+
+\subsection{Traces d'exécution ascendante}
+
+\begin{tracebox}[Trace 1 — Mot nu (BARE)]
+\texttt{word(nil, rest(root("livre"), nil))} :\\[4pt]
+\begin{tabular}{rl}
+    Feuille \texttt{nil} & $\to$ NIL \\
+    Feuille \texttt{root} & $\to$ ROOT \\
+    Feuille \texttt{nil} & $\to$ NIL \\
+    Noeud \texttt{rest(ROOT, NIL)} & $\to$ REST \\
+    Noeud \texttt{word(NIL, REST)} & $\to$ \textbf{WORD} \checkmark \\
+\end{tabular}
+\end{tracebox}
+
+\begin{tracebox}[Trace 2 — Shield BLOQUÉ]
+\texttt{sys(role())} :\\[4pt]
+\begin{tabular}{rl}
+    Feuille \texttt{role} & $\to$ ROLE \\
+    Noeud \texttt{sys(ROLE)} & $\to$ \textbf{DANGER} \checkmark \\
+\end{tabular}
+\end{tracebox}
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Calculabilité (Jour 4)}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Q4.1 — Machine de Turing et Machine Universelle}
+
+\textbf{Encodage $\langle M \rangle$ :} La machine $M$ est sérialisée en JSON injectif :
+\begin{lstlisting}
+{"transitions": {"q0,1": ["q0", "1", "R"], ...},
+ "start": "q0", "accept": ["qf"], "reject": []}
+\end{lstlisting}
+Les clés sont triées (\texttt{sort\_keys=True}), garantissant l'injectivité. L'UTM $U$ décode et simule fidèlement :
+$$U(\langle M \rangle, w) = M(w)$$
+
+\subsection{Q4.2 — Calculatrice unaire}
+
+\subsubsection*{Table ADD — expliquée ligne par ligne}
+\begin{center}
+\begin{tabular}{llp{9cm}}
+    \toprule
+    \textbf{Transition} & \textbf{Action} & \textbf{Explication} \\
+    \midrule
+    \texttt{(q0, 1) $\to$ (q0, 1, R)} & Droite & Traverse l'opérande $n$. \\
+    \texttt{(q0, +) $\to$ (q1, 1, R)} & Écrit 1 & Remplace \texttt{+} par un \texttt{1} (fusion). \\
+    \texttt{(q1, 1) $\to$ (q1, 1, R)} & Droite & Traverse l'opérande $m$. \\
+    \texttt{(q1, \_) $\to$ (q2, \_, L)} & Gauche & Atteint la fin, recule. \\
+    \texttt{(q2, 1) $\to$ (qf, \_, S)} & Efface & Retire le \texttt{1} excédentaire $\to$ $n+m$. \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Table SUB — expliquée ligne par ligne}
+
+Principe : apparier les \texttt{1} de $m$ avec ceux de $n$ en les marquant \texttt{X}.
+
+\begin{center}
+\begin{tikzpicture}[start chain=1 going right, node distance=-0.15mm]
+    \node [on chain=1, tapecell] {1};
+    \node [on chain=1, tapecell] {1};
+    \node [on chain=1, tapecell, fill=grisfond] {X};
+    \node [on chain=1, tapecell] {-};
+    \node [on chain=1, tapecell, fill=grisfond] (head) {X};
+    \node [on chain=1, tapecell] {1};
+    \node [on chain=1, tapecell] {\_};
+    \draw [tapehead] ($(head.south)+(0,-0.4)$) -- (head.south);
+    \node[below=0.6cm of head, font=\scriptsize\color{gris}] {tête};
+\end{tikzpicture}
+\end{center}
+
+\begin{center}
+\begin{tabular}{llp{8.5cm}}
+    \toprule
+    \textbf{Transition} & \textbf{Action} & \textbf{Explication} \\
+    \midrule
+    \texttt{(q0, 1) $\to$ (q0, 1, R)} & Droite & Traverse $n$ vers la droite. \\
+    \texttt{(q0, -) $\to$ (q1, -, R)} & Droite & Passe le séparateur. \\
+    \texttt{(q1, X) $\to$ (q1, X, R)} & Droite & Saute les \texttt{X} déjà marqués. \\
+    \texttt{(q1, 1) $\to$ (q2, X, L)} & Marque & Marque un \texttt{1} de $m$ en \texttt{X}, retour gauche. \\
+    \texttt{(q2, 1) $\to$ (q0, X, R)} & Marque & Marque un \texttt{1} de $n$ en \texttt{X}, retour droite. \\
+    \texttt{(q1, \_) $\to$ (q3, \_, L)} & Nettoyage & Plus de \texttt{1} dans $m$ : nettoyer. \\
+    \texttt{(q2, \_) $\to$ (q4, \_, R)} & Effacement & Plus de \texttt{1} dans $n$ : résultat = 0. \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{MUL/DIV par composition :} La multiplication est une addition répétée ($n$ fois $m$). La division est une soustraction répétée ($n \div m$) comptant les itérations.
+
+\subsection{Q4.3 — Complexité et Indécidabilité}
+
+\textbf{Surcoût de simulation} (sourcé) : La simulation d'une machine à $k$ rubans sur 1 ruban est en $O(t^2)$. Sur 2 rubans, elle est en $O(t \log t)$ (\textit{Hennie \& Stearns, J.~ACM, 1966}).
+
+\textbf{Indécidabilité de l'arrêt :} Supposons $H$ décidant l'arrêt. Construisons $D$ : sur entrée $\langle M \rangle$, $D$ boucle si $H$ accepte, s'arrête si $H$ rejette. $D(\langle D \rangle)$ mène à une \textbf{contradiction} dans les deux cas. Donc $H$ n'existe pas.
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Intégration \& Myhill--Nerode (Jour 5)}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Q5.1 — Pipeline bout-en-bout}
+
+Le pipeline enchaîne les trois étages de la hiérarchie sur une même entrée :
+
+\begin{lstlisting}[language=Python]
+# python pipeline.py --word 4or
+# 1. Normalisation FST : "4or" -> "aor"
+# 2. AFD minimal : accepte "aor" (contient "or") -> True
+# 3. PDA : pile vide a la fin -> True
+\end{lstlisting}
+
+\begin{tracebox}[Sortie console — Mode Word]
+\texttt{normalisé(FST) : aor} \\
+\texttt{facteur\_or(AFD) : True} \\
+\texttt{délimiteurs\_ok(PDA) : True}
+\end{tracebox}
+
+\begin{tracebox}[Sortie console — Mode Morpho]
+\texttt{\{'classe(BUTA)': 'PREFIXED'\}}
+\end{tracebox}
+
+\begin{tracebox}[Sortie console — Mode Shield]
+\texttt{OK \quad seq(txt,txt)} \\
+\texttt{OK \quad role (isolé)} \\
+\texttt{BLOQUÉ \quad sys(role)} \\
+\texttt{BLOQUÉ \quad seq(frame(ovr),txt)} \\
+\texttt{BLOQUÉ \quad sys(seq(txt,frame(role)))}
+\end{tracebox}
+
+\subsection{Q5.2 — Suffixes témoins et Classes d'équivalence}
+
+Pour $L_1$ et les suffixes témoins $S = \{\epsilon, r, \text{or}, a\}$, le calcul des signatures produit exactement \textbf{3 classes d'équivalence} :
+
+\begin{center}
+\begin{tabular}{c l l}
+    \toprule
+    \textbf{Classe} & \textbf{Signature} & \textbf{Description} \\
+    \midrule
+    $A$ & (F, F, T, F) & Ne contient pas \texttt{or}, ne finit pas par \texttt{o} \\
+    $B$ & (F, T, T, F) & Ne contient pas \texttt{or}, finit par \texttt{o} \\
+    $C$ & (T, T, T, T) & Contient déjà \texttt{or} \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+Il y a \textbf{bijection} entre ces classes et les 3 états de l'AFD minimal ($A$, $B$, $C$).
+
+\subsection{Q5.3 — Hash-consing (Bonus)}
+
+Mesure sur \textbf{10\,800 mots} (\texttt{corpus\_A(600)} $\cup$ \texttt{corpus\_B(600)}) :
+
+\begin{center}
+\begin{tabular}{lr}
+    \toprule
+    \textbf{Métrique} & \textbf{Valeur} \\
+    \midrule
+    Total des noeuds visités & 70\,200 \\
+    Noeuds uniques en mémoire (DAG) & 16\,233 \\
+    Taux de compression & \textbf{76,88\,\%} \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Difficultés rencontrées \& choix de conception}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\begin{enumerate}
+    \item \textbf{Ruban bi-infini de la Machine de Turing :} Nous avons utilisé un \texttt{dict[int, str]} au lieu d'un tableau de taille fixe. Cela permet les indices négatifs, l'extension dynamique et des accès en $O(1)$.
+    \item \textbf{Explosion combinatoire du générateur CFG :} La règle $S \to SS$ génère une infinité de dérivations. Nous avons implémenté un double élagage (nombre de terminaux et de non-terminaux) combiné à un parcours BFS avec dérivation la plus à gauche.
+    \item \textbf{Généricité du BUTA :} Le moteur \texttt{tree.py} stocke $\Delta$ sans hypothèse sur le type des états (chaînes ou entiers), permettant l'intégration de morpho et shield sans altérer le code de base. Respect strict de la règle \textit{Gate}.
+\end{enumerate}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Répartition du travail}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+Le travail a été réalisé en binôme par \textbf{programmation en paire} (pair programming) :
+
+\begin{center}
+\begin{tabular}{ll}
+    \toprule
+    \textbf{Membre} & \textbf{Responsabilités principales} \\
+    \midrule
+    ANATO K. Freddy & Conception des algorithmes, justifications théoriques \\
+    GUENANON K. C. Ulysse & Implémentation du code, tests unitaires \\
+    \midrule
+    \multicolumn{2}{c}{\textit{Revue croisée et rédaction du rapport en commun}} \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+\newpage
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section*{Annexe — Sortie console}
+\addcontentsline{toc}{section}{Annexe — Sortie console}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection*{Tests unitaires (\texttt{pytest -q})}
+
+\begin{lstlisting}
+PS> python -m pytest -q
+............................                                   [100%]
+28 passed in 0.48s
+\end{lstlisting}
+
+\subsection*{Pipeline — Mode Word}
+
+\begin{lstlisting}
+PS> python -m pipeline --word "4or"
+        normalise(FST) : aor
+       facteur_or(AFD) : True
+   delimiteurs_ok(PDA) : True
+\end{lstlisting}
+
+\subsection*{Pipeline — Mode Morpho}
+
+\begin{lstlisting}
+PS> python -m pipeline --morpho "mufafak"
+{'classe(BUTA)': 'PREFIXED'}
+\end{lstlisting}
+
+\subsection*{Pipeline — Mode Shield}
+
+\begin{lstlisting}
+PS> python -m pipeline
+== demo Shield (AttackDecomposer) ==
+  OK      seq(txt,txt)
+  OK      role (isole)
+  BLOQUE  sys(role)
+  BLOQUE  seq(frame(ovr),txt)
+  BLOQUE  sys(seq(txt,frame(role)))
+\end{lstlisting}
+
+\end{document}
